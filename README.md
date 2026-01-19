@@ -5,6 +5,10 @@ FastAPI playground API with MCP metadata and a CLI AI agent that uses MCP and RA
 ## Installation
 
 ```shell
+source .venv/bin/activate
+```
+
+```shell
 pip install -r requirements.txt
 ```
 
@@ -19,5 +23,6 @@ uvicorn api.main:app --reload --host 127.0.0.1 --port 5000
 Illustrating multiple rag folders and multiple MCP servers endpoints
 
 ```shell
+export OPENAI_API_KEY=your_api_key_here
 python agent/main.py --rag ./rag ./rag --mcp http://127.0.0.1:5000/mcp http://127.0.0.1:5000/mcp -t ./tasks/example.md ./tasks/example.md
 ```
