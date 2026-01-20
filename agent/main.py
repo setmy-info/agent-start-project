@@ -4,10 +4,12 @@ from glob import glob
 import requests
 import openai
 import json
+#from chromadb import Client
+#from chromadb.config import Settings
 
-def load_rag_rules(paths):
+def load_rules(paths):
     """
-    Load RAG rules
+    Load rules
     """
     rules = []
     for path in paths:
@@ -61,13 +63,13 @@ def load_tasklists(file_paths):
         return None
     return "\n\n".join(all_tasks)
 
-def ask_ai_to_process_tasks(tasklist_content, rag_rules, mcp_json_list):
+def ask_ai_to_process_tasks(tasklist_content, task_rules, mcp_json_list):
     """
     Request AI
     """
     prompt = f"""
-RAG rules:
-{'\n'.join(rag_rules)}
+TASK rules:
+{'\n'.join(task_rules)}
 
 MCP metadata:
 """
@@ -144,11 +146,11 @@ def execute_ai_tasks(ai_output, mcp_servers):
 def main():
     parser = argparse.ArgumentParser(description="CLI AI Agent")
     parser.add_argument(
-        "--rag",
+        "--rules",
         "-r",
         nargs="+",
         required=True,
-        help="Path(s) to RAG rule directories"
+        help="Path(s) to TASK rule directories"
     )
     parser.add_argument(
         "--mcp",
@@ -167,10 +169,10 @@ def main():
 
     args = parser.parse_args()
 
-    rag_rules = load_rag_rules(args.rag)
+    task_rules = load_rules(args.rules)
 
-    print(f"Loaded {len(rag_rules)} RAG file:")
-    for i, rule in enumerate(rag_rules, start=1):
+    print(f"Loaded {len(task_rules)} RULE files")
+    for i, rule in enumerate(task_rules, start=1):
         print(f"\n--- File {i} ---")
         print(rule)
         print("--------------")
@@ -196,7 +198,7 @@ def main():
     print(tasklist_content)
 
     openai.api_key = os.getenv("OPENAI_API_KEY")
-    ai_output = ask_ai_to_process_tasks(tasklist_content, rag_rules, all_mcp)
+    ai_output = ask_ai_to_process_tasks(tasklist_content, task_rules, all_mcp)
 
     print("\nAI Model Output:")
     print(ai_output)

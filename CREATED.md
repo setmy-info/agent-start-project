@@ -41,8 +41,8 @@ pip install fastapi uvicorn openai
 pip install -r requirements.txt
 ```
 
-7. **RAG data folder created**
+7. **Rules data folder created**
 
 ```shell
-mkdir rag
+mkdir rules
 ```
